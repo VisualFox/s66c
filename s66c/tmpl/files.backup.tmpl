@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+
+use strict;
+
+my $dir = "{$dir}";
+my $domain = "{$domain}";
+my $app = "{$app}";
+my $filesparent = "{$filesparent}";
+my $filesname = "{$filesname}";
+
+(my $Second, my $Minute, my $Hour, my $Day, my $Month, my $Year, my $WeekDay, my $DayOfYear, my $IsDST) = localtime(time);
+my @months = qw( jan feb mar apr may jun jul aug sep oct nov dec );
+my @days = qw( mon, tue, wed, thu, fri, sat, sun );
+
+my $dt = sprintf($app."_%02d_%s_%4d_%02d.%02d.%02d", $Day+1, $months[$Month], $Year+1900, $Hour, $Minute, $Second);
+
+system "cd $dir/$domain/httpdocs/$app/$filesparent && nice -n 15 tar -czf $dt.tgz $filesname && mv $dt.tgz $dir/$domain/private/files.backup";

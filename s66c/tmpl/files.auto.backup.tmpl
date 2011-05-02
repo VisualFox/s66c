@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+use strict;
+
+my $dir = "{$dir}";
+my $domain = "{$domain}";
+my $app = "{$app}";
+my $filesparent = "{$filesparent}";
+my $filesname = "{$filesname}";
+
+(my $Second, my $Minute, my $Hour, my $Day, my $Month, my $Year, my $WeekDay, my $DayOfYear, my $IsDST) = localtime(time);
+my @months = qw( jan feb mar apr may jun jul aug sep oct nov dec );
+my @days = qw( sun mon tue wed thu fri sat );
+
+my $dt = sprintf($app."_%s", $days[$WeekDay]);
+
+if (-e "$dir/$domain/private/file.auto.backup/$dt.gz") \{
+	unlink("$dir/$domain/private/file.auto.backup/$dt.gz");
+\}
+
+system "cd $dir/$domain/httpdocs/$app/$filesparent && nice -n 15 tar -czf $dt.tgz $filesname && mv $dt.tgz $dir/$domain/private/files.auto.backup";
+
+if($Day==0 || $Day==14) \{
+	my $dt2 = sprintf($app."_%02d_%s", $Day+1, $months[$Month]);
+	
+	if (-e "$dir/$domain/private/db.auto.backup/$dt2.gz") \{
+		unlink("$dir/$domain/private/db.auto.backup/$dt2.gz");
+	\}
+	
+	system "cp $dir/$domain/private/file.auto.backup/$dt.gz $dir/$domain/private/file.auto.backup/$dt2.gz"
+\}

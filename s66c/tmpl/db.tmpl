@@ -1,0 +1,73 @@
+sub dbGetHost \{
+	return '{$host}';
+\}
+
+sub dbGetDb \{
+	return '{$db}';
+\}
+
+sub dbGetUser \{
+	return '{$user}';
+\}
+
+sub dbGetPass \{
+	return '{$pass}';
+\}
+
+sub dbCreate \{
+	my $db = '{$db}';
+	my $host = '{$host}';
+	my $user = '{$user}';
+	my $pass = '{$pass}';
+
+	my $cmd = "CREATE DATABASE $db; USE $db; GRANT ALL ON $db.* TO '$user'".'@'."$host IDENTIFIED BY '$pass';";
+	dbRun($cmd);
+\}
+
+sub dbDelete \{
+	my $db = '{$db}';
+	my $host = '{$host}';
+	my $user = '{$user}';
+	my $pass = '{$pass}';
+
+	my $cmd = "DROP DATABASE $db; DROP USER '$user'".'@'."$host;";
+	dbRun($cmd);
+\}
+
+sub dbDropAll \{
+	my $db = '{$db}';
+	my $host = '{$host}';
+	my $user = '{$user}';
+	my $pass = '{$pass}';
+	
+	system "mysqldump -h$host -u$user -p$pass --add-drop-table --no-data $db | grep ^DROP | mysql -h$host -u$user -p$pass $db";
+\}
+
+sub dbRollback \{
+	my $path = shift;
+	my $file = shift;
+
+	my $db = '{$db}';
+	my $host = '{$host}';
+	my $user = '{$user}';
+	my $pass = '{$pass}';
+	
+	system "mysql -h$host -u$user -p$pass $db < $path/$file"; 
+\}
+
+sub dbInfo \{
+	my $db = '{$db}';
+	my $user = '{$user}';
+	my $pass = '{$pass}';
+
+	print "\n\n*****************************************************\n";
+		
+	print "\nDatabase: $db\n";
+	print "\nUser: $user\n";
+	print "\nPassword: $pass\n";
+		
+	print "\n*****************************************************\n\n";
+\}
+
+#DON'T FORGET THE 1!
+1

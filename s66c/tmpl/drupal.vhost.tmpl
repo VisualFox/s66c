@@ -1,0 +1,25 @@
+# wildcard
+server \{
+        include /etc/nginx/eth1;
+        server_name ~^(.+)\.{$domain_regex}$;
+        location / \{
+                root /var/www/nginx-default;
+                index index.html index.htm;
+        \}
+\}
+
+# redirect if not using www
+server \{
+        include /etc/nginx/eth1;
+        server_name {$domain};
+        rewrite ^(.+)$ http://www.$host$1 permanent;
+\}
+
+server \{
+	include /etc/nginx/eth1;
+	server_name www.{$domain};
+	access_log /var/log/nginx/{$domain}.access.log main;
+	error_log  /var/log/nginx/{$domain}.error.log warn;
+	root /var/www/vhosts/{$domain}/httpdocs/app;
+	include /etc/nginx/drupal;
+\}

@@ -1,0 +1,7 @@
+SHELL={$envShell}
+HOME={$envHome}
+MAIL={$envMail}
+PATH={$envPath}
+USER={$envUser}
+
+{$m} *     * * *     root    {$drush} --root={$path} core-cron

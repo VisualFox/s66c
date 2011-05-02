@@ -1,0 +1,8 @@
+SHELL={$envShell}
+HOME={$envHome}
+MAIL={$envMail}
+PATH={$envPath}
+USER={$envUser}
+
+{$mdb} {$hdb}     * * *     root    {$perl} {$path}/db.auto.backup/backup.pl
+{$mfile} {$hfile}     * * {$dfile}     root    {$perl} {$path}/files.auto.backup/backup.pl
