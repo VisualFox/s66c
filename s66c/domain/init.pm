@@ -361,7 +361,7 @@ sub initApp {
 	#create db...
 	if(&promptUser("Create a new db? (yes|no)", 'yes') eq 'yes') {
 		
-		if (-f "$dir/$domain/private/db.pl") {
+		if (not -f "$dir/$domain/private/db.pl") {
 			my $random = new String::Random;
 		
 			$random->{'A'} = ['A'..'Z', 'a'..'z', 0..9];

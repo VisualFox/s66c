@@ -132,9 +132,9 @@ sub listVHost {
 
 	return '' if(@list==0);
 	
-	return &promptUserQuestions('Please choose a vhost file :', @list) if($action eq "select");
+	return &promptUserQuestions('', 'Please choose a vhost file :', @list) if($action eq "select");
 
-	return &promptUserQuestions("Please choose a vhost file to $action :", @list);
+	return &promptUserQuestions('', "Please choose a vhost file to $action :", @list);
 }
 
 sub listDomain {
