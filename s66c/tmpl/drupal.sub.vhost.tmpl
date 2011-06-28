@@ -1,8 +1,8 @@
 server \{
 	include /etc/nginx/eth1;
 	server_name {$subdomain}.{$domain};
-	access_log /var/log/nginx/{$subdomain}.{$domain}.access.log main;
-	error_log  /var/log/nginx/{$subdomain}.{$domain}.error.log warn;
+	access_log /var/log/nginx/{$subdomain}.{$domain}.access.log;
+	error_log  /var/log/nginx/{$subdomain}.{$domain}.error.log;
 	root /var/www/vhosts/{$domain}/subdomains/{$subdomain}/httpdocs/app;
 	include /etc/nginx/drupal;
 \}

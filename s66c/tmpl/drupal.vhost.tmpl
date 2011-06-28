@@ -18,8 +18,8 @@ server \{
 server \{
 	include /etc/nginx/eth1;
 	server_name www.{$domain};
-	access_log /var/log/nginx/{$domain}.access.log main;
-	error_log  /var/log/nginx/{$domain}.error.log warn;
+	access_log /var/log/nginx/{$domain}.access.log;
+	error_log  /var/log/nginx/{$domain}.error.log;
 	root /var/www/vhosts/{$domain}/httpdocs/app;
 	include /etc/nginx/drupal;
 \}
