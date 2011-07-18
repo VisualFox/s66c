@@ -246,7 +246,7 @@ sub initApp {
 						}
 					
 		 				$clone .= "\t".'system "hg clone /var/hg/$domain/$appPath/$modulesPath/'.$_.' $path/$modulesPath/'.$_.'";'."\n";
-		 				$push  .= "\t".'system "cd $path/$modulesPath/'.$_.' && hg add && hg commit -m \"automatic commit\" && hg push && cd /var/hg/$domain/$appPath/$modulesPath/'.$_.' && hg update";'."\n";
+		 				$push  .= "\t".'system "cd $path/$modulesPath/'.$_.' && hg addremove && hg commit -m \"automatic commit\" && hg push && cd /var/hg/$domain/$appPath/$modulesPath/'.$_.' && hg update";'."\n";
 		 				$pull  .= "\t".'system "cd $path/$modulesPath/'.$_.' && hg pull && hg update";'."\n";
 		 			}
 		 			
