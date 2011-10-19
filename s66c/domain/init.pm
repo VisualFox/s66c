@@ -54,13 +54,21 @@ sub initApp {
 	#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	
 	#Use version control system and install drupal module?
-	if(&promptUser("Use version control system and install some drupal modules for $domain? (yes|no)", 'yes') eq 'yes') {
+	if(&promptUser("Use version control and install some Drupal modules for $domain? (yes|no)", 'yes') eq 'yes') {
 	
 		my $gitPath = which('git');
 		my $mercurialPath = which('hg');
 	
-		if($gitPath || $mercurialPath) {
+		if($gitPath && &promptUser("Use git for $domain? (yes|no)", 'no') eq 'no') {
+			$gitPath = undef;
+		}
+		
+		if($mercurialPath && &promptUser("Use mercurial for $domain? (yes|no)", 'yes') eq 'no') {
+			$mercurialPath = undef;
+		}
 	
+		if($gitPath || $mercurialPath) {
+		
 			$filter = &promptUser("Drupal version (4,5,6,7,8,9)", "7") unless ($filter);
 		
 			#ask for modules and themes to install...
@@ -121,11 +129,26 @@ sub initApp {
 				}
 				
 	 			if(&promptUser("Use blueprint theme? (yes|no)", 'yes') eq 'yes') {
-					if($themesToInstall eq "") {
-						$themesToInstall = "blueprint-$filter.x";
-					}
-					else {
-						$themesToInstall .= " blueprint-$filter.x";
+	 				#for 7 we use https://github.com/urbanlink/drupal_blueprint_7
+	 				if($filter==7) {
+	 					my $blueprintGit = "https://github.com/urbanlink/drupal_blueprint_7.git";
+	 					
+	 					if($gitPath) {
+	 						system "mkdir -p /var/git/$domain/$appPath/$themesPath/drupal";
+	 						system "git clone $blueprintGit /var/git/$domain/$appPath/$themesPath/drupal/blueprint";
+	 					}
+	 					elsif($mercurialPath) {
+	 						system "mkdir -p /var/hg/$domain/$appPath/$themesPath/drupal";
+	 						system "git clone $blueprintGit /var/hg/$domain/$appPath/$themesPath/drupal/blueprint";
+	 					}
+	 				}
+	 				else {
+						if($themesToInstall eq "") {
+							$themesToInstall = "blueprint-$filter.x";
+						}
+						else {
+							$themesToInstall .= " blueprint-$filter.x";
+						}
 					}
 				}
 			
@@ -143,7 +166,7 @@ sub initApp {
 	
 			#create git.pl
 			unless(-f "$dir/$domain/private/git.pl") {
-				if($gitPath && &promptUser("Use git for $domain? (yes|no)", 'yes') eq 'yes') {
+				if($gitPath) {
 					
 					unless(-d "/var/git") {
 		    			system "mkdir /var/git && chown root:root /var/git";
@@ -159,7 +182,6 @@ sub initApp {
 						unless(-d "/var/git/$domain/$appPath/$modulesPath/$_") {
 							
 							system "mkdir -p /var/git/$domain/$appPath/$modulesPath/$_";
-							
 							system "cd /var/git/$domain/$appPath/$modulesPath/$_ && drush dl $develModulesToInstall" if($develModulesToInstall and $_ eq "devel");
 							system "cd /var/git/$domain/$appPath/$modulesPath/$_ && drush dl $modulesToInstall" if($modulesToInstall and $_ eq "drupal");
 	
@@ -182,9 +204,8 @@ sub initApp {
 						unless(-d "/var/git/$domain/$appPath/$themesPath/$_") {
 							
 							system "mkdir -p /var/git/$domain/$appPath/$themesPath/$_";
-							
 							system "cd /var/git/$domain/$appPath/$themesPath/$_ && drush dl $themesToInstall" if($themesToInstall and $_ eq "drupal");
-							
+
 							#commit
 							system "cd /var/git/$domain/$appPath/$themesPath/$_ && chown -R root:root /var/git/$domain/$appPath/$modulesPath/$_ && git init && git add . && git commit -m \"Initial commit\"";
 					
@@ -218,7 +239,7 @@ sub initApp {
 		
 			#create hg.pl (mercurial)
 			unless(-f "$dir/$domain/private/hg.pl") {
-				if($mercurialPath && &promptUser("Use mercurial for $domain? (yes|no)", 'yes') eq 'yes') {
+				if($mercurialPath) {
 					
 					unless(-d "/var/hg") {
 		    			system "mkdir /var/hg && chown root:root /var/hg";
