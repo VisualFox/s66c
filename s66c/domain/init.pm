@@ -69,6 +69,8 @@ sub initApp {
 	
 		if($gitPath || $mercurialPath) {
 		
+			my $appPath = "httpdocs/app";
+		
 			$filter = &promptUser("Drupal version (4,5,6,7,8,9)", "7") unless ($filter);
 		
 			#ask for modules and themes to install...
@@ -161,8 +163,6 @@ sub initApp {
 					}
 				}
 			}
-		
-			my $appPath = "httpdocs/app";
 	
 			#create git.pl
 			unless(-f "$dir/$domain/private/git.pl") {
