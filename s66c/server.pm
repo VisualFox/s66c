@@ -92,62 +92,6 @@ sub createConfiguration {
 	
 		writeConfigurationFile("$scriptPath/s66c/config.cfg");
 	}
-	
-	createConfigurationForTwitter();
-}
-
-sub createConfigurationForTwitter {
-	
-	if(confirm('Create a Twitter access account', 'yes')) {
-		my $octobot = "/etc/octobot";
-		
-		if(-d $octobot) {
-		
-			my $redis = which('redis-server');
-		
-			if($redis) {
-				
-				my $scriptPath = $main::scriptPath;
-			
-				my $twitterusername;
-				my $consumerKey;
-				my $consumerSecret;
-				my $accessToken;
-				my $accessTokenSecret;
-				
-				if(not -d "$octobot/twitter") {
-					system "mkdir -p $octobot/twitter";
-				}
-				
-				$twitterusername = &promptUser("Enter twitter user name");
-				
-				if($twitterusername) {
-					$consumerKey = &promptUser("Enter twitter consumer key for $twitterusername");
-					$consumerSecret = &promptUser("Enter twitter consumer secret for $twitterusername");
-					$accessToken = &promptUser("Enter twitter access token for $twitterusername");
-					$accessTokenSecret = &promptUser("Enter twitter access token secret for $twitterusername");
-					
-					my $template = Text::Template->new(SOURCE => "$scriptPath/s66c/tmpl/twitter.tmpl") or die "Couldn't construct template: $Text::Template::ERROR";
-		        	my %vars = (consumerKey => $consumerKey, consumerSecret => $consumerSecret, accessToken => $accessToken, accessTokenSecret => $accessTokenSecret);
-		       		my $result = $template->fill_in(HASH => \%vars);
-		
-		        	if (defined $result) {
-						open (FILE, ">$octobot/twitter/$twitterusername.properties");
-						print FILE $result;
-						close (FILE);
-						
-						printNotice('twitter access account created', "$octobot/twitter/$twitterusername.properties");
-					}
-				}
-			}
-			else {
-				printError('Redis is not installed');
-			}
-		}
-		else {
-			printError('Octobot is not installed');
-		}
-	}
 }
 
 1;

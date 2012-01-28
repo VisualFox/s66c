@@ -318,7 +318,6 @@ sub mainAction {
 		}
 		else {
 			printNotice('Selected', "$dir/$domain");
-			tweetInit($domain, 'Working on {$tweet}') if(functionExists('tweetInit'));
 			actionDomain($dir, $domain);
 		}
 	}
@@ -372,11 +371,9 @@ sub init {
 	require("$scriptPath/s66c/disk.pm");
 
 	require("$scriptPath/s66c/welcome.pm") if (-f "$scriptPath/s66c/welcome.pm");
-	require("$scriptPath/s66c/tweet.pm") if (-f "$scriptPath/s66c/tweet.pm");
-
+	
 	welcome() if(functionExists('welcome'));
 	diskUsage();
-	setTweet() if(functionExists('setTweet'));
 	mainAction();
 }
 

@@ -240,15 +240,6 @@ sub forkApp {
 	
 	#--------------------------------------------
 	
-	if(functionExists('tweetInit')) {
-		if($new_install) {
-			tweetInit($domain, 'Installing {$tweet}');
-		}
-		else {
-			tweetInit($domain, 'Forking {$tweet}');
-		}
-	}
-	
 	printNotice('Created', "$target/$dt");
 }
 

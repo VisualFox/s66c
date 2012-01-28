@@ -372,8 +372,6 @@ sub initApp {
 	
 	#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	
-	tweetInit($domain, 'Initialising {$tweet}') if(functionExists('tweetInit'));
-	
 	#install application script
 	if(&promptUser("Install application (drupal, wordpress)? (yes|no)", 'yes') eq 'yes') {
 		forkApp($dir, $domain, $filter);

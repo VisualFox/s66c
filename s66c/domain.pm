@@ -131,7 +131,6 @@ sub pushApp {
 		unsetExtra();
 	}
 	
-	tweetInit($domain, 'Committing {$tweet}') if(functionExists('tweetInit'));
 }
 
 sub pullApp {
@@ -243,7 +242,6 @@ sub rollbackApp {
 	#--------------------------------------------
 
 	printNotice('rolled back', "$target/$dt");
-	tweetInit($domain, 'Rolling back {$tweet}') if(functionExists('tweetInit'));
 }
 
 sub dropDb {
