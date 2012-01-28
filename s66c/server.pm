@@ -16,7 +16,8 @@ sub checkStack {
 	my $mysql = which('mysql');
 	my $mongo = which('mongo');
 	my $redis = which('redis-server');
-	my $octobot = (-d '/etc/octobot')? '/etc/octobot' : '';
+	my $beanstalk = which('beanstalkd');
+	#my $octobot = (-d '/etc/octobot')? '/etc/octobot' : '';
 	my $ntpd = which('ntpd');
 	
 	printNoticeOrWarning('git', $git, 'git not installed');
@@ -35,7 +36,8 @@ sub checkStack {
 	printNoticeOrError('mysql', $mysql, 'mysql not installed');
 	
 	printNoticeOrWarning('mongo', $mongo, 'mongo not installed');
-	printNoticeOrWarning('octobot', $octobot, 'octobot not installed');
+	printNoticeOrWarning('beanstalk', $beanstalk, 'beanstalk not installed');
+	#printNoticeOrWarning('octobot', $octobot, 'octobot not installed');
 	printNoticeOrWarning('redis', $redis, 'redis not installed');
 	
 	printNoticeOrWarning('monit', $monit, 'monit not installed');
