@@ -223,6 +223,11 @@ sub forkApp {
 			system "cd $target/$dt && chown -R www-data:www-data $files";
 		}
 		
+		#set correct ownership for settings.php
+		if(-d "$target/$dt/sites/default/settings.php") {
+			system "cd $target/$dt/sites/default && chown www-data:www-data settings.php";
+		}
+		
 		#cache boost module
 		if(-d "$source/$dt/cache") {
 			system "cd $target/$dt && chown -R www-data:www-data cache";
