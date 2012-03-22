@@ -153,9 +153,11 @@ sub forkApp {
 		#drupal may complain when it cannot find $files
 		system "mkdir $target/$dt/$files" unless(-d "$target/$dt/$files");
 		
-		if(&promptUser("Clean up drupal installation (yes|no)", 'yes') eq 'yes') {
-			system "cd $target/$dt && drush cu";
-		}
+		#not supported anymore by drupal 7
+		#
+		#if(&promptUser("Clean up drupal installation (yes|no)", 'yes') eq 'yes') {
+		#	system "cd $target/$dt && drush cu";
+		#}
 		
 		if(&promptUser("Run cron.php via cron (yes|no)", 'yes') eq 'yes') {
 		
