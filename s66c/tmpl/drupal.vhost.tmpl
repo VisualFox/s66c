@@ -35,7 +35,7 @@ server \{
         return 444;
     \}
     ## Deny access based on the Referrer header.
-    if ($bad_referrer) \{
+    if ($bad_referer) \{
         return 444;
     \}
 
